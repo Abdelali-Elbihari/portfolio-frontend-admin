@@ -1,11 +1,16 @@
 import { addAboutApi, getAboutsApi, deleteAboutApi, updateAboutApi } from '../apis/aboutApi.js';
 import { toastSuccess, toastError } from '../shared/toast';
+import aboutBackend from '../assets/aboutBackend.png';
 
 export const getAbouts = () => async (dispatch) => {
   try {
     const { data } = await getAboutsApi();
     dispatch({ type: 'GET_ABOUTS', payload: data });
   } catch (error) {
+    dispatch({
+      type: 'GET_ABOUTS',
+      payload: [{ title: 'Title example', description: 'Description  example', image: aboutBackend }]
+    });
     console.log(error);
   }
 };

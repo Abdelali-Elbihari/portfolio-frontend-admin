@@ -1,29 +1,22 @@
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
+import { Box, Avatar } from '@mui/material';
 import { addAbout, updateAbout } from '../actions/aboutAction.js';
-import DatePicker from 'react-datepicker';
-import 'react-datepicker/dist/react-datepicker.css';
 
 const AboutModal = ({ id, header, about, submitValue, colorButton }) => {
-  const [startDate, setStartDate] = useState(new Date());
-  const [endDate, setEndDate] = useState(new Date());
   const { register, handleSubmit, reset, setValue } = useForm();
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (id === 'editAbout') {
       setValue('title', about.title);
-      setValue('school', about.school);
-      setValue('city', about.city);
-      setStartDate(Date.parse(about.startDate));
-      setStartDate(Date.parse(about.endDate));
+      setValue('description', about.description);
+      setValue('image', about.image);
     }
   }, [about, id, setValue]);
 
   const onClick = (data) => {
-    data.startDate = startDate;
-    data.endDate = endDate;
     if (id === 'editAbout') {
       dispatch(updateAbout(about._id, data));
     } else {
@@ -70,46 +63,45 @@ const AboutModal = ({ id, header, about, submitValue, colorButton }) => {
 
                         <div className='col-md-12'>
                           <div className='md-form mb-0'>
-                            <label htmlFor='school' className=''>
-                              School
+                            <label htmlFor='description' className=''>
+                              Description
                             </label>
                             <input
                               type='text'
-                              id='school'
-                              name='school'
+                              id='description'
+                              name='description'
                               className='form-control shadow-none'
-                              {...register('school')}
+                              {...register('description')}
                             />
                           </div>
                         </div>
-                        <div className='col-md-12'>
+                        <div className='col-md-10'>
                           <div className='md-form mb-0'>
-                            <label htmlFor='city' className=''>
-                              City
+                            <label htmlFor='link' className=''>
+                              Image
                             </label>
+                            <Box sx={{ flexGrow: { xs: 0, md: 0 }, justifyContent: 'flex-end' }}>
+                              <Avatar
+                                alt='image'
+                                variant='square'
+                                src={about.image}
+                                sx={{
+                                  height: 65,
+                                  width: 65,
+                                  margin: '1rem 2rem 1rem 0',
+                                  justifyContent: 'center',
+                                  objectFit: 'scale-down'
+                                }}
+                              />
+                            </Box>
                             <input
-                              type='text'
-                              id='city'
-                              name='city'
+                              type='file'
+                              id='image'
+                              name='image'
                               className='form-control shadow-none'
-                              {...register('city')}
+                              multiple={false}
+                              {...register('image')}
                             />
-                          </div>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='md-form mb-0'>
-                            <label htmlFor='school' className=''>
-                              Start Date
-                            </label>
-                            <DatePicker selected={startDate} onChange={(date) => setStartDate(date)} />
-                          </div>
-                        </div>
-                        <div className='col-md-6'>
-                          <div className='md-form mb-0'>
-                            <label htmlFor='school' className=''>
-                              End Date
-                            </label>
-                            <DatePicker selected={endDate} onChange={(date) => setEndDate(date)} />
                           </div>
                         </div>
                       </div>
